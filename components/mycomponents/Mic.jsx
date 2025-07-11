@@ -1,9 +1,10 @@
 'use client'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import { useEffect } from 'react';
 
-const Mic = ({setMicrophoneIsAvaliables}) => {
+const Mic = ({ setMicrophoneIsAvaliables = () => {}, setUserAnswer = () => {} }) => {
+  const [isClient, setIsClient] = useState(false);
+
   const {
     transcript,
     listening,
@@ -12,28 +13,53 @@ const Mic = ({setMicrophoneIsAvaliables}) => {
     isMicrophoneAvailable
   } = useSpeechRecognition();
 
-  SpeechRecognition.startListening({
-    continuous: true,
-    language: 'en-US'
-  })
+  // Set flag when mounted on client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
+  // Start listening only on client
+  useEffect(() => {
+    if (isClient) {
+      setMicrophoneIsAvaliables(isMicrophoneAvailable);
+      SpeechRecognition.startListening({
+        continuous: true,
+        language: 'en-US',
+      });
+    }
+  }, [isClient, isMicrophoneAvailable, setMicrophoneIsAvaliables]);
+
+  // Send transcript to parent
+  useEffect(() => {
+    if (isClient) {
+      setUserAnswer(transcript);
+    }
+  }, [transcript, setUserAnswer, isClient]);
+
+  // Safe fallback if SSR
+  if (!isClient || !browserSupportsSpeechRecognition) {
+    return <div className="text-red-600">Microphone not supported</div>;
   }
 
-  useEffect(() => {
-  setMicrophoneIsAvaliables(isMicrophoneAvailable);
-}, [isMicrophoneAvailable, setMicrophoneIsAvaliables]);
-
-
   return (
-    <div>
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
+    <div className='w-[80vw] sm:w-[20vw] h-10 bg-gray-600 rounded-[40px] flex items-center justify-around'>
+      <div>
+        <div className={`h-[10px] w-[10px] rounded-full animate-ping ${listening ? 'bg-green-600' : 'bg-red-600'}`}></div>
+      </div>
+
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
+
+      <button
+        onClick={() => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' })}
+        className='h-[60px] w-[60px] bg-yellow-400 rounded-full'
+      >
+        Start
+      </button>
+
       <button onClick={resetTranscript}>Reset</button>
-      <p>{transcript}</p>
+      <p>w</p>
     </div>
   );
 };
+
 export default Mic;
