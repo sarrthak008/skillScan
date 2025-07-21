@@ -14,7 +14,7 @@ import c from '@/app/assets/c.png'
 import java from '@/app/assets/java.png'
 
 
-const page = () => {
+const Page = () => {
 
     const FILDS = ['Html', 'css', 'JavaScript', 'Java', 'C', 'Python', 'C-share', 'C-shalsh'];
     const IMAGES_ARR = [html, css, javascript, java, c, python, csharp]
@@ -119,4 +119,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

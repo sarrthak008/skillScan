@@ -6,7 +6,7 @@ import LOGO from '@/app/assets/py.svg'
 import Loader from '@/components/mycomponents/Loader'
 import Modal from '@/components/mycomponents/CheckCredentialsModal'
 
-const page = () => {
+const Page = () => {
 
   const [points, setPoints] = useState([]);
 
@@ -59,4 +59,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
