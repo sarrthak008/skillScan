@@ -2,8 +2,9 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import SpeechRecognition ,{useSpeechRecognition}  from 'react-speech-recognition'
-import Dictaphone from './Mic'
 import Mic from './Mic'
+import { useRouter } from 'next/navigation'
+
 
 
 
@@ -23,6 +24,7 @@ const Modal = ({ title = 'checking details', setIsModelOpen ,interviewPerparatio
   const [microPhoneIsavaliable, setMicrophoneIsAvaliable] = useState(false)
   const [isquestionGanarated,setIsquestionGanarated] = useState(false)
     // const [ganratedQuestions,setGanratedQuestions] = useState('')
+  const router = useRouter()
 
   const connectToTheServer = async () => {
 
@@ -55,6 +57,12 @@ const Modal = ({ title = 'checking details', setIsModelOpen ,interviewPerparatio
      }
   }
 
+  const handelNextPage = () => {
+     if(isquestionGanarated){
+         router.push(`/dashboard/${interviewPerparationTopic}`);
+     }
+  }
+
 
   useEffect(() => {
     connectToTheServer()
@@ -82,7 +90,7 @@ const Modal = ({ title = 'checking details', setIsModelOpen ,interviewPerparatio
       
         <div className='flex items-center justify-end text-gray-300 gap-6 mt-12 mr-10'>
           <button className='border-1 cursor-pointer border-gray-400 py-1 px-5 rounded-md' onClick={() => { handelModelClose() }}>Close</button>
-          <button className='border-1 cursor-pointer border-gray-400 py-1 px-5 rounded-md bg-gray-500 text-gray-900'>Start</button>
+          <button className={`${isquestionGanarated ? "bg-white text-black" : "bg-gray-500 text-gray-900"} border-1 cursor-pointer border-gray-400 py-1 px-5 rounded-md`} onClick={()=>{handelNextPage()}}>Start</button>
         </div>
       </div>
       <div className='hidden'>

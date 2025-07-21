@@ -24,7 +24,7 @@ const Mic = ({ setMicrophoneIsAvaliables = () => {}, setUserAnswer = () => {} })
       setMicrophoneIsAvaliables(isMicrophoneAvailable);
       SpeechRecognition.startListening({
         continuous: true,
-        language: 'en-US',
+        language: 'en-IN',
       });
     }
   }, [isClient, isMicrophoneAvailable, setMicrophoneIsAvaliables]);
@@ -47,17 +47,17 @@ const Mic = ({ setMicrophoneIsAvaliables = () => {}, setUserAnswer = () => {} })
         <div className={`h-[10px] w-[10px] rounded-full animate-ping ${listening ? 'bg-green-600' : 'bg-red-600'}`}></div>
       </div>
 
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
+      <button onClick={SpeechRecognition.stopListening} className='cursor-pointer'>Stop</button>
 
       <button
         onClick={() => SpeechRecognition.startListening({ continuous: true, language: 'en-IN' })}
-        className='h-[60px] w-[60px] bg-yellow-400 rounded-full'
+        className='h-[60px] w-[60px] bg-yellow-400 rounded-full cursor-pointer flex items-center justify-center hover:bg-yellow-600'
       >
         Start
       </button>
 
-      <button onClick={resetTranscript}>Reset</button>
-      <p>w</p>
+      <button onClick={resetTranscript} className='cursor-pointer'>Reset</button>
+      <p>{listening ? 'L' : 'S'}</p>
     </div>
   );
 };
