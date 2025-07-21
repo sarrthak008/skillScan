@@ -29,41 +29,43 @@ const Page = () => {
 
             const points = JSON.parse(localStorage.getItem('points')) || []
 
-               if(result){
+            if (result) {
 
-                   if(!points.includes(fildName)){
-                     points.push({
-                        language_name:fildName,
-                        language_image : IMAGES_ARR[FILDS.indexOf(fildName)] ?  IMAGES_ARR[FILDS.indexOf(fildName)] : css
-                     })
-                     localStorage.setItem('points',JSON.stringify(points))
-                   }
+                if (!points.includes(fildName)) {
+                    points.push({
+                        language_name: fildName,
+                        language_image: IMAGES_ARR[FILDS.indexOf(fildName)] ? IMAGES_ARR[FILDS.indexOf(fildName)] : css
+                    })
+                    localStorage.setItem('points', JSON.stringify(points))
+                }
 
-               }else{
+            } else {
 
                 const index = points.indexOf(fildName)
-                points.splice(index,1)
-                localStorage.setItem('points',JSON.stringify(points))
+                points.splice(index, 1)
+                localStorage.setItem('points', JSON.stringify(points))
 
-               }
-               
+            }
+
         } catch (error) {
 
-           console.error(`your browser not support i think or ${error.message}`);
+            console.error(`your browser not support i think or ${error.message}`);
         }
     }
 
-    const handelLocalStorgeLevel =(title)=>{
+    const handelLocalStorgeLevel = (title) => {
 
         try {
-            localStorage.setItem('level',title);
+            localStorage.setItem('level', title);
         } catch (error) {
 
-           console.log(`your browser not support i think or ${error.message}`);
+            console.log(`your browser not support i think or ${error.message}`);
         }
     }
 
-    useEffect(()=>{handelLocalStorgeLevel('easy'),[]});
+    useEffect(() => {
+        handelLocalStorgeLevel('easy');
+    }, []);
 
     return (
 
@@ -95,7 +97,7 @@ const Page = () => {
                                 LEVELS.map((level, index) => {
                                     return (
                                         <span key={index}>
-                                            <AppRadio title={level} key={index} name="level" onchange={(title)=>handelLocalStorgeLevel(title)}/>
+                                            <AppRadio title={level} key={index} name="level" onchange={(title) => handelLocalStorgeLevel(title)} />
                                         </span>
                                     )
                                 })
